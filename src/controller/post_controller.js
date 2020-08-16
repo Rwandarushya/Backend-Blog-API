@@ -1,4 +1,6 @@
-import posts from '../model/posts.json';
+import myposts from '../model/posts.json';
+
+let posts=myposts;
 
 export const getAllPosts=(req, res)=>{
     res.send(posts);
