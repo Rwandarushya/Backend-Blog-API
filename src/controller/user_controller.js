@@ -33,4 +33,8 @@ export const deleteUser=(req, res)=>{
     const {id} = req.params;
     users=users.filter((us)=>us.user_id !==id );
     res.send(users);
-}
+};
+
+export const registerUser=(req, res)=>{
+    res.send('register');
+};

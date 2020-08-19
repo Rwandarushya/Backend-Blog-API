@@ -1,4 +1,5 @@
 import myposts from '../model/posts.json';
+import { jwt } from 'jsonwebtoken';
 
 let posts=myposts;
 
@@ -6,10 +7,18 @@ export const getAllPosts=(req, res)=>{
     res.send(posts);
 };
 
+
 export const createPost= (req,res)=>{
-        const myPost=req.body;
-        posts.push(myPost);
-        res.send(posts);
+    jwt.verify(req.token, 'secretkey', (err, authData)=>{
+        if(err){
+            res.sendStatus(403);
+        }else {
+            const myPost=req.body;
+            posts.push(myPost);
+            res.send(posts);  
+        }
+    });
+        
     };
 
 export const getPostById= (req, res)=>{
