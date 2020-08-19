@@ -1,0 +1,2 @@
+web: node index.js
+NPM_CONFIG_PRODUCTION=false
