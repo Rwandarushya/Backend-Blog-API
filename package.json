@@ -4,7 +4,6 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "node server.js",
     "dev": "nodemon --exec babel-node ./src/index.js",
     "build": "babel  ./src -d build --source-maps --copy-files"
   },
