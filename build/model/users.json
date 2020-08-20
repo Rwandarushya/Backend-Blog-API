@@ -1,0 +1,15 @@
+[
+    {
+        "user_id":"0001",   
+        "First-name":"Marius Robert",
+        "Last-name":"Rwandarushya",
+        "email":"robert@gmail.com",
+        "role":"admin"
+    },
+    {   "user_id":"0002",   
+        "First-name":"Rafiki",
+        "Last-name":"Jules",
+        "email":"rafiki@gmail.com",
+        "role":"guest" 
+    }
+    ]
