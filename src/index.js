@@ -38,31 +38,24 @@ app.post('/login', (req, res)=>{
       });
 });
 
-function verifyToken(req, res, next){
-    //get auth header values
-    const bearerHeader= req.headers['authorization'];
-    //check if bearer is undefined
-    if(typeof bearerHeader !== 'undefined'){
-        const bearer= bearerHeader.split(' ');
-        const bearerToken=bearer[1];
-        req.token=bearerToken;
-        next();
-    }
-    else{
-        res.sendStatus(403);
-    }
-}
 
-app.post('/posts',verifyToken, (req,res)=>{
-    jwt.verify(req.token, 'secretkey', (err, authData)=>{
-        if(err){
-            res.sendStatus(403);
-        }else {
-            const myPost=req.body;
-            posts.push(myPost);
-            res.send(posts);  
-        }
-    });
-});
+
+
+
+// app.delete('/posts/:id',verifyToken,(req,res)=>{
+//     jwt.verify(req.token, 'secretkey', (err, authData)=>{
+//         if(err){
+//             res.sendStatus(403);
+//         }else {
+//             const {id} = req.params;
+//             posts=posts.filter((p)=>p.post_id !==parseInt(id) );
+//             res.send(posts); 
+//         }
+//     });
+    
+// });
+app.use('/posts', postRoutes);
 app.use('/messages', messageRoutes);
 app.use('/users', userRoutes);
+
+export default app;

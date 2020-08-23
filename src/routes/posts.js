@@ -1,17 +1,17 @@
 import express from 'express';
-import {getAllPosts,createPost, getPostById, deletePost, updatePost} from '../controller/post_controller.js'
-
+import {getAllPosts, getPostById, createPost, deletePost, updatePost} from '../controller/post_controller.js'
+import {verifyToken} from '../controller/auth_controller';
 
 const router =express.Router();
 
 router.get('/', getAllPosts);
 
-router.post('/', createPost);
-
 router.get('/:id',getPostById);
 
-router.delete('/:id', deletePost);
+router.post('/',verifyToken, createPost);
 
-router.patch('/:id', updatePost);
+router.delete('/:id',verifyToken, deletePost);
+
+router.patch('/:id', verifyToken, updatePost);
 
 export default router;
