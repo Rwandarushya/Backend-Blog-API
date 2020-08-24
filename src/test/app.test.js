@@ -76,6 +76,12 @@ describe('Test users',()=>{
             })
     });
 
+    it('it should return single user', ()=>{
+        chai.request(app)
+            .get('/users/2')
+
+    });
+
     it('it should save new user',()=>{ 
         beforeEach(function (done) {       
             user = new User({

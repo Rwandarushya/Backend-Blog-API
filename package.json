@@ -7,7 +7,7 @@
     "start": "node ./build/index.js",
     "dev": "nodemon --exec babel-node ./src/index.js",
     "build": "babel ./src -d build",
-    "test": "mocha ./src/test/app.test.js --require @babel/register"
+    "test": "nyc mocha ./src/test/app.test.js --require @babel/register"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +20,8 @@
     "@babel/register": "^7.10.5",
     "chai": "^4.2.0",
     "mocha": "^8.1.1",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "nyc": "^15.1.0"
   },
   "dependencies": {
     "chai-http": "^4.3.0",
