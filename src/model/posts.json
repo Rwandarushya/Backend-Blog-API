@@ -4,12 +4,19 @@
     "post_id":1,
     "post_title":"Web technology",
     "post_body":"web technology is first",
-    "author":"Gael Hirwa"
+    "author":"Gael Hirwa",
+    "Date":"",
+    "comments":[
+        {"comment_id":"0001", "Names": "Kagabo Faustin", "email":"kagabo@gmail.com", "comment":"hellolo world"},
+        {"comment_id":"0001", "Names": "Mutoni clema", "email":"clema@gmail.com", "comment":"sing for joy"}
+    ]
 },
 {   "post_id":2,
     "post_title":"Cyber security",
     "post_body":"introduction to ethical hacking",
-    "author":"Ngoga David"  
+    "author":"Ngoga David", 
+    "Date":"",
+    "comments":[]
 }
 ]
 

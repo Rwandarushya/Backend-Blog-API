@@ -1,5 +1,5 @@
 import express from 'express';
-import {getAllPosts, getPostById, createPost, deletePost, updatePost} from '../controller/post_controller.js'
+import {getAllPosts, getPostById,getComments,addComment, createPost, deletePost, updatePost} from '../controller/post_controller.js'
 import {verifyToken} from '../controller/auth_controller';
 
 const router =express.Router();
@@ -7,6 +7,10 @@ const router =express.Router();
 router.get('/', getAllPosts);
 
 router.get('/:id',getPostById);
+
+router.get('/:id/comments', getComments);
+
+router.post('/:id/comments', addComment);
 
 router.post('/',verifyToken, createPost);
 

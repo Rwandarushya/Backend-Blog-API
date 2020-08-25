@@ -1,5 +1,6 @@
 import myposts from '../model/posts.json';
 import  jwt  from 'jsonwebtoken';
+import bodyParser from 'body-parser'
 
 let posts=myposts;
 
@@ -20,6 +21,20 @@ export const getPostById= (req, res)=>{
     const post= posts.find((p)=>p.post_id===parseInt(id) );
    res.send(post);
 };
+
+export const getComments=(req, res)=>{
+    const {id}= req.params;
+    const post=  posts.find((p)=>p.post_id===parseInt(id));
+    res.send(post.comments);
+}
+
+export const addComment=(req, res)=>{
+    const {id}=req.params;
+    const post= posts.find((p)=>p.post_id===parseInt(id));
+    const comment= req.body;
+    post.comments.push(comment);
+    res.send(post.comments);
+}
 
 export const deletePost=(req,res)=>{
     const {id} = req.params;

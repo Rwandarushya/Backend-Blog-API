@@ -7,7 +7,7 @@
     "start": "node ./build/index.js",
     "dev": "nodemon --exec babel-node ./src/index.js",
     "build": "babel ./src -d build",
-    "test": "nyc mocha ./src/test/app.test.js --require @babel/register"
+    "test": "nyc mocha ./src/test/*.test.js --require @babel/register"
   },
   "keywords": [],
   "author": "",
