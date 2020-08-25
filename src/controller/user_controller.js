@@ -36,5 +36,7 @@ export const deleteUser=(req, res)=>{
 };
 
 export const registerUser=(req, res)=>{
-    res.send('register');
+    const user= req.body;
+    users.push(user);
+    res.send(users);
 };

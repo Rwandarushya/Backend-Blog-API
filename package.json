@@ -7,8 +7,10 @@
     "start": "node ./build/index.js",
     "dev": "nodemon --exec babel-node ./src/index.js",
     "build": "babel ./src -d build",
-    "test": "mocha ./src/test/*.test.js --require @babel/register",
-    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "test": "nyc --reporter=text --reporter=html mocha ./src/test/*.test.js --require @babel/register --timeout 10000 --exit"
+
+
   },
   "keywords": [],
   "author": "",
