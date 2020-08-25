@@ -1,6 +1,9 @@
 import chai, {expect, should, assert} from 'chai';
 const chaiHttp= require('chai-http');
 import app from '../index.js';
+import bodyParser from 'body-parser'
+
+app.use(bodyParser.json())
 
 chai.use(chaiHttp);
 
