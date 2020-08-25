@@ -1,6 +1,9 @@
 import chai, {expect, should, assert} from 'chai';
 const chaiHttp= require('chai-http');
 import app from '../index.js';
+import bodyParser from 'body-parser'
+
+app.use(bodyParser.json())
 
 chai.use(chaiHttp);
 
@@ -74,6 +77,12 @@ describe('Test users',()=>{
                 assert.typeOf(res.body, 'Array');
                 assert.lengthOf(res.body, 2);
             })
+    });
+
+    it('it should return single user', ()=>{
+        chai.request(app)
+            .get('/users/2')
+
     });
 
     it('it should save new user',()=>{ 
