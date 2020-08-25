@@ -15,7 +15,6 @@ describe('Test the authentication',()=>{
             .end((err, res)=>{
                 assert.typeOf(res.body, 'Object');
                 assert.typeOf(res.body.token, 'string');
-                console.log(res.body);
             })
     })
     
@@ -41,6 +40,34 @@ describe('Test posts route',()=>{
             })
     })
 
+    it( 'it should return all comments on specific post', ()=>{
+        chai.request(app)
+            .get('/posts/1/comments')
+            .end((err, res)=>{
+                const comments= res.body;
+                expect(comments).to.be.a('array');
+                expect(comments).to.have.lengthOf(2);
+            });
+    });
+
+    it('it should add comment to the post', ()=>{
+        //creating a mock comment
+        const comment=  {
+            "comment_id": "0007",
+            "Names": "Paccy Lotro",
+            "email": "ligana@gmail.com",
+            "comment": "Always Welcome"
+        };
+        chai.request(app)
+            .post('/posts/1/comments')
+            .send(comment)
+            .end((err, res)=>{
+                const comments= res.body;
+                expect(comments).to.have.lengthOf(3);
+                expect(comments[2].Names).to.equal('Paccy Lotro');
+            });
+    });
+
     it('it should save the post',()=>{        
          before((done)=>{
             const myPost={    
@@ -53,6 +80,9 @@ describe('Test posts route',()=>{
                 .post('/login')
                 .end((err, res)=>{
                     // if i want to test login
+                    const token =res.boby;
+                    err.should.be.a(null);
+                    token.should.be.a('string');
                 });                
         
             chai.request(app)
@@ -67,47 +97,5 @@ describe('Test posts route',()=>{
     })
 });
 
-describe('Test users',()=>{
-    it('it should return all users',()=>{
-        chai.request(app)
-            .get('/users')
-            .end((err, res)=>{
-                // err.should.equal(null);
-                assert.equal(err, null);
-                assert.typeOf(res.body, 'Array');
-                assert.lengthOf(res.body, 2);
-            })
-    });
-
-    it('it should return single user', ()=>{
-        chai.request(app)
-            .get('/users/2')
-
-    });
-
-    it('it should save new user',()=>{ 
-        beforeEach(function (done) {       
-            user = new User({
-                "user_id": "0008",
-                "First-name": "Muhire Olivier",
-                "Last-name": "John",
-                "email": "joohn@gmail.com",
-                "role": "admin"               
-            });
-            request(app)
-                .post('/users')
-                .send(user)
-                .end((err, res)=> {
-                    if (err) {
-                        throw err;
-                    }
-                    res.should.have.status(200);
-                    res.body.user_id.should.exist;
-                    done();
-            });
-    });   
-});
-
-});
 
 
