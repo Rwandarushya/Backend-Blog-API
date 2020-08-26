@@ -4,12 +4,14 @@
         "First-name":"Marius Robert",
         "Last-name":"Rwandarushya",
         "email":"robert@gmail.com",
-        "role":"admin"
+        "role":"admin",
+        "password":"$2a$08$AfyKJMngjBHIWrYfQBJ76e19qSOA.6HYO78NycBlyTgHFl7wh9NJe"
     },
     {   "user_id":"0002",   
         "First-name":"Rafiki",
         "Last-name":"Jules",
         "email":"rafiki@gmail.com",
-        "role":"guest" 
+        "role":"guest",
+        "password":"$2a$08$AfyKJMngjBHIWrYfQBJ76e19qSOA.6HYO78NycBlyTgHFl7wh9NJe"
     }
     ]

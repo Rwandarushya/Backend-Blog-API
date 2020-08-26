@@ -8,6 +8,7 @@ let posts=myposts;
 import postRoutes from './routes/posts.js'
 import messageRoutes from './routes/messages.js'
 import userRoutes from './routes/user.js'
+import {signup, login} from './controller/auth_controller.js'
 
 import jwt from 'jsonwebtoken';
 
@@ -29,17 +30,9 @@ app.get('/', (req, res)=>{
 });
 
 
+app.post('/signup', signup)
 
-app.post('/login', (req, res)=>{
-    const user={
-        user_id: "0001",
-        username:" marius robert",
-        email: "robert@gmail.com"
-    }
-    jwt.sign({user}, 'secretkey', function(err, token) {
-        res.json({token});
-      });
-});
+app.post('/login', login);
 
 
 

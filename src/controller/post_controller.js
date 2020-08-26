@@ -9,11 +9,12 @@ export const getAllPosts=(req, res)=>{
 };
 
 
-export const createPost= (req,res)=>{    
-    const myPost=req.body;
+export const createPost= (req,res)=>{
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    const myPost={...req.body, date, comments:[]};
             posts.push(myPost);
-            res.send(myPost);
-        
+            res.send(myPost);        
     };
 
 export const getPostById= (req, res)=>{

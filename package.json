@@ -9,8 +9,6 @@
     "build": "babel ./src -d build",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "test": "nyc --reporter=text --reporter=html mocha ./src/test/*.test.js --require @babel/register --timeout 10000 --exit"
-
-
   },
   "keywords": [],
   "author": "",
@@ -28,6 +26,7 @@
     "nyc": "^15.1.0"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "chai-http": "^4.3.0",
     "dotenv": "^8.2.0",
