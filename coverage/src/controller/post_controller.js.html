@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">59.09% </span>
+                <span class="strong">43.48% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>26/44</span>
+                <span class='fraction'>20/46</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">58.33% </span>
+                <span class="strong">41.67% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>7/12</span>
+                <span class='fraction'>5/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">58.97% </span>
+                <span class="strong">43.9% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>23/39</span>
+                <span class='fraction'>18/41</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -120,7 +120,8 @@
 <a name='L61'></a><a href='#L61'>61</a>
 <a name='L62'></a><a href='#L62'>62</a>
 <a name='L63'></a><a href='#L63'>63</a>
-<a name='L64'></a><a href='#L64'>64</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -135,7 +136,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -151,11 +153,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -194,11 +196,12 @@ export const getAllPosts=(req, res)=&gt;{
 };
 &nbsp;
 &nbsp;
-export const createPost= <span class="fstat-no" title="function not covered" >(r</span>eq,res)=&gt;{    
-    const myPost=<span class="cstat-no" title="statement not covered" >req.body;</span>
+export const createPost= <span class="fstat-no" title="function not covered" >(r</span>eq,res)=&gt;{
+    var today = <span class="cstat-no" title="statement not covered" >new D</span>ate();
+    var date = <span class="cstat-no" title="statement not covered" >today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.</span>getDate();
+    const myPost=<span class="cstat-no" title="statement not covered" >{.</span>..req.body, date, comments:[]};
 <span class="cstat-no" title="statement not covered" >            posts.</span>push(myPost);
-<span class="cstat-no" title="statement not covered" >            res.</span>send(myPost);
-        
+<span class="cstat-no" title="statement not covered" >            res.</span>send(myPost);        
     };
 &nbsp;
 export const getPostById= (req, res)=&gt;{
@@ -213,12 +216,12 @@ export const getComments=(req, res)=&gt;{
     res.send(post.comments);
 }
 &nbsp;
-export const addComment=(req, res)=&gt;{
-    const {id}=req.params;
-    const post= posts.find((p)=&gt;p.post_id===parseInt(id));
-    const comment= req.body;
-    post.comments.push(comment);
-    res.send(post.comments);
+export const addComment=<span class="fstat-no" title="function not covered" >(r</span>eq, res)=&gt;{
+    const {id}=<span class="cstat-no" title="statement not covered" >req.params;</span>
+    const post= <span class="cstat-no" title="statement not covered" >posts.</span>find((<span class="fstat-no" title="function not covered" >p)=&gt;<span class="cstat-no" title="statement not covered" >p</span>.post_id===parseInt(i</span>d));
+    const comment= <span class="cstat-no" title="statement not covered" >req.body;</span>
+<span class="cstat-no" title="statement not covered" >    post.</span>comments.push(comment);
+<span class="cstat-no" title="statement not covered" >    res.</span>send(post.comments);
 }
 &nbsp;
 export const deletePost=<span class="fstat-no" title="function not covered" >(r</span>eq,res)=&gt;{
@@ -253,7 +256,7 @@ export const updatePost=<span class="fstat-no" title="function not covered" >(r<
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Aug 25 2020 21:41:52 GMT+0200 (Eastern European Standard Time)
+                at Wed Aug 26 2020 14:58:09 GMT+0200 (Eastern European Standard Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>
