@@ -17,12 +17,14 @@ export const signup=(req, res)=>{
       "password" : hashedPassword,
       "role":req.body.role
     }
+    const usersFound = users.find(((userInfo) => userInfo.email === user.email));
+    if (usersFound) return res.status(403).send({ status: 403, message: 'Email is registered with an other user' });
     users.push(user);
       // create a token
-      var token = jwt.sign({ email:user.email, password:user.password }, 'secretkeyyy', {
+      var token = jwt.sign({ email:user.email, password:user.password }, 'secretkey', {
         expiresIn: 86400 // expires in 24 hours
       });
-      res.status(200).send({ auth: true, token: token, users });
+      res.status(200).send({ message:"User Registered succesfully", token: token});
 }
 
 export const login = (req, res) => {
@@ -54,7 +56,7 @@ export const verifyToken=(req, res, next)=>{
         req.token=bearerHeader;
         jwt.verify(req.token, 'secretkey', (err, authData)=>{
             if(err){
-                res.send(err); 
+                res.send({message:"Un authorized access, your token is not valid!!!"}); 
             }
             else{
                 next();

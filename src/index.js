@@ -8,7 +8,7 @@ let posts=myposts;
 import postRoutes from './routes/posts.js'
 import messageRoutes from './routes/messages.js'
 import userRoutes from './routes/user.js'
-import {signup, login} from './controller/auth_controller.js'
+import authRoutes from './routes/auth.js'
 
 import jwt from 'jsonwebtoken';
 
@@ -29,29 +29,11 @@ app.get('/', (req, res)=>{
     res.send('welcome to express');
 });
 
-
-app.post('/signup', signup)
-
-app.post('/login', login);
-
-
-
-
-
-// app.delete('/posts/:id',verifyToken,(req,res)=>{
-//     jwt.verify(req.token, 'secretkey', (err, authData)=>{
-//         if(err){
-//             res.sendStatus(403);
-//         }else {
-//             const {id} = req.params;
-//             posts=posts.filter((p)=>p.post_id !==parseInt(id) );
-//             res.send(posts); 
-//         }
-//     });
-    
-// });
+app.use('/auth',authRoutes )
 app.use('/posts', postRoutes);
 app.use('/messages', messageRoutes);
 app.use('/users', userRoutes);
+
+
 
 export default app;

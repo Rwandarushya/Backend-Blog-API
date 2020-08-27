@@ -1,4 +1,5 @@
 import mymessages from '../model/messages.json';
+import bodyParser from 'body-parser'
 let messages=mymessages;
 
 export const getAllMessages=(req, res)=>{
@@ -12,7 +13,7 @@ export const findMessageById=(req, res)=>{
 };
 
 export const createMessage=(req, res)=>{
-  myMessage=req.body;
+   const myMessage=req.body;
   messages.push(myMessage);
   res.send(messages);
 };

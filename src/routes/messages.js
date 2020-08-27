@@ -7,8 +7,8 @@ router.get('/',[verifyToken,verifyAdmin], getAllMessages);
 
 router.get('/:id',[verifyToken,verifyAdmin], findMessageById);
 
- router.post('/', createMessage); 
+router.post('/', createMessage); 
 
- router.delete('/:id', [verifyToken,verifyAdmin], deleteMessage);
+router.delete('/:id', [verifyToken,verifyAdmin], deleteMessage);
 
 export default router;
