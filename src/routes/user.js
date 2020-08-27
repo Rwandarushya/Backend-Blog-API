@@ -11,8 +11,6 @@ router.patch('/:id',[verifyToken,verifyAdmin], updateUser);
 
 router.delete('/:id',[verifyToken,verifyAdmin], deleteUser);
 
-//router.get('/signup', registerUser)
-
 export default router;
 
 

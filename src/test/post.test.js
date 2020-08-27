@@ -2,46 +2,20 @@ import chai, {expect, should, assert} from 'chai';
 const chaiHttp= require('chai-http');
 import app from '../index.js';
 import bodyParser from 'body-parser'
-
+import {login} from './middleware.js'
 app.use(bodyParser.json());
 
 chai.use(chaiHttp);
 
 
-//login middleware
-function login(){
-   //mock user
-   const user={
-    "email":"robert@gmail.com",
-    "password":"123456"
-    }
-  const userFound = users.find(((userInfo) => userInfo.email === user.email));
-  if (!userFound) return res.status(404).send({ status: 404, message: 'Account does not exist' });
-
-  var passwordIsValid = bcrypt.compareSync(user.password, userFound.password);
-  if (!passwordIsValid) return res.status(401).send({ auth: false,message:"incorrect password", token: null });
-
-  var token = jwt.sign({ email:userFound.email, password:userFound.password }, 'secretkey', {
-    expiresIn: 86400 // expires in 24 hours
-  });
-  res.json({message: 'Login succesfully',token});
-}
-
-
-
 describe('Test the authentication',()=>{
-
-    before((done)=>{
-        login();
         it('it should check user and return token',()=>{
         chai.request(app)
             .post('/login')
             .end((err, res)=>{
+                assert.equal(err, null);
                 assert.typeOf(res.body, 'Object');
-                assert.typeOf(res.body.token, 'string');
             })
-            done();
-    })
 })
 
 });

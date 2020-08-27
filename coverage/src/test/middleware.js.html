@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/controller/message_controller.js</title>
+    <title>Code coverage report for src/test/middleware.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/controller</a> message_controller.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/test</a> middleware.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">36.84% </span>
+                <span class="strong">88.24% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/19</span>
+                <span class='fraction'>15/17</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">50% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>2/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">41.18% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/17</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -84,52 +84,52 @@
 <a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import mymessages from '../model/messages.json';
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import  jwt  from 'jsonwebtoken';
+import express from 'express'
 import bodyParser from 'body-parser'
-let messages=mymessages;
+import bcrypt from 'bcryptjs' 
+import allUsers from '../model/users.json';
+let users= allUsers;
 &nbsp;
-export const getAllMessages=<span class="fstat-no" title="function not covered" >(r</span>eq, res)=&gt;{
-<span class="cstat-no" title="statement not covered" >    res.</span>send(messages);
-};
+//login middleware
 &nbsp;
-export const findMessageById=<span class="fstat-no" title="function not covered" >(r</span>eq, res)=&gt;{
-    const {id} = <span class="cstat-no" title="statement not covered" >req.params;</span>
-    const message= <span class="cstat-no" title="statement not covered" >messages.</span>find((<span class="fstat-no" title="function not covered" >msg)=&gt;<span class="cstat-no" title="statement not covered" >m</span>sg.id===(id) );</span>
-<span class="cstat-no" title="statement not covered" >   res.</span>send(message);
-};
-&nbsp;
-export const createMessage=<span class="fstat-no" title="function not covered" >(r</span>eq, res)=&gt;{
-   const myMessage=<span class="cstat-no" title="statement not covered" >req.body;</span>
-<span class="cstat-no" title="statement not covered" >  messages.</span>push(myMessage);
-<span class="cstat-no" title="statement not covered" >  res.</span>send(messages);
-};
-&nbsp;
-export const deleteMessage=<span class="fstat-no" title="function not covered" >(r</span>eq, res)=&gt;{
-const {id}= <span class="cstat-no" title="statement not covered" >req.params;</span>
-<span class="cstat-no" title="statement not covered" >messages=</span>messages.filter((<span class="fstat-no" title="function not covered" >msg)=&gt;<span class="cstat-no" title="statement not covered" >m</span>sg.id !==id );</span>
-<span class="cstat-no" title="statement not covered" >    res.</span>send(messages);
-};</pre></td></tr></table></pre>
+ export const login = (req, res) =&gt; {
+    const { email, password } = {
+        "email":"robert@gmail.com",
+        "password":"123456"
+        }
+    const userFound = users.find(((userInfo) =&gt; userInfo.email === email));
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!userFound) <span class="cstat-no" title="statement not covered" >return r</span>es.status(404).send({ status: 404, message: 'Account does not exist' });
+  
+    var passwordIsValid = bcrypt.compareSync(password, userFound.password);
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!passwordIsValid) <span class="cstat-no" title="statement not covered" >return r</span>es.status(401).send({ auth: false,message:"incorrect password", token: null });
+  
+    var token = jwt.sign({ email:userFound.email, password:userFound.password }, 'secretkey', {
+      expiresIn: 86400 // expires in 24 hours
+    });
+    return token;
+  };</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

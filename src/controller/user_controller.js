@@ -1,42 +1,61 @@
-import allUsers from '../model/users.json'
-let users= allUsers;
+import Users from '../model/user_model'
+import mongoose from 'mongoose'
+import bcrypt from 'bcryptjs' 
+
 
 export const getAllUsers=(req, res)=>{
-    res.send(users);
+    Users.find()
+        .exec()
+        .then(usr=>{
+            res.status(200).json({usr});
+        })
+        .catch(err=>{
+            res.status(500).json(err)
+        });
 };
 
 export const findUserById=(req, res)=>{
-    const {id}=req.params;
-    const user= users.find((us)=>us.user_id===id);
-   res.send(user);
+    const {id} = req.params;
+    Users.findById(id)
+        .exec()
+        .then(usr=>{
+            if(usr){
+            res.status(200).json({usr});
+            }
+            else{
+                res.status(404).json({message:'User not found'})
+            }            
+        })
+        .catch(err=>{
+            console.log(err)
+            res.status(500)
+        });
 };
 
 
 export const updateUser=(req, res)=>{
-    const {id} = req.params;
-    const {first_name, last_name, role}= req.body;
-    const myUser= users.find(p=>p.user_id==id );
-
-    if(first_name){
-        myUser.first_name=first_name;
+    const updateOps={};
+    for(const ops of req.body){
+        updateOps[ops.propName]=obs.value;
     }
-    if(last_name){
-        myUser.last_name=last_name;
-    }
-    if(role){
-        myUser.role=role;
-      }
-    res.send(users);
+    Users.update({_id:id},{set: updateOps})
+            .exec()
+            .then(result=>{
+                res.status(200).json({message:"User updated successfully!"})
+            })
+            .catch(err=>{
+                res.status(500).json({err})
+            });
 };
 
 export const deleteUser=(req, res)=>{
-    const {id} = req.params;
-    users=users.filter((us)=>us.user_id !==id );
-    res.send(users);
-};
-
-export const registerUser=(req, res)=>{
-    const user= req.body;
-    users.push(user);
-    res.send(users);
+    const {id}= req.params;
+    Users.remove({_id:id})
+        .exec()
+        .then(result=>{
+            res.status(200).json({message:'User deleted succesfully'})
+        }).
+        catch(err=>{
+            res.status(500).json(err);
+        });
 };

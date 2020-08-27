@@ -1,7 +1,7 @@
 [
 {
 
-    "post_id":1,
+    "post_id":"1",
     "post_title":"Web technology",
     "post_body":"web technology is first",
     "author":"Gael Hirwa",
@@ -12,7 +12,7 @@
         {"comment_id":"0002", "Names": "Mutoni clema", "email":"clema@gmail.com", "comment":"sing for joy"}
     ]
 },
-{   "post_id":2,
+{   "post_id":"2",
     "post_title":"Cyber security",
     "post_body":"introduction to ethical hacking",
     "author":"Ngoga David", 
