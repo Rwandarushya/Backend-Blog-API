@@ -1,45 +1,56 @@
 import  jwt  from 'jsonwebtoken';
 import express from 'express'
-import bodyParser from 'body-parser'
 import bcrypt from 'bcryptjs' 
-import allUsers from '../model/users.json';
-
-let users= allUsers;
+import Users from '../model/user_model';
+import { v4 as uuidv4 } from 'uuid';
+uuidv4();
 
 export const signup=(req, res)=>{
-    var hashedPassword = bcrypt.hashSync(req.body.password, 8);
-  
-    const user={
-      "user_id": req.body.user_id,
-      "first_name" : req.body.first_name,
-      "last_name":req.body.last_name,
-      "email" : req.body.email,
-      "password" : hashedPassword,
-      "role":req.body.role
-    }
-    const usersFound = users.find(((userInfo) => userInfo.email === user.email));
-    if (usersFound) return res.status(403).send({ status: 403, message: 'Email is registered with an other user' });
-    users.push(user);
-      // create a token
-      var token = jwt.sign({ email:user.email, password:user.password }, 'secretkey', {
-        expiresIn: 86400 // expires in 24 hours
-      });
-      res.status(200).send({ message:"User Registered succesfully", token: token});
+  var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+  const newUser= new Users({
+    first_name:req.body.lirst_name,
+    last_name:req.body.last_name,
+    email:req.body.email, 
+    role:req.body.role,
+    password:hashedPassword
+    });
+    newUser.save().then(result=>{
+        var token = jwt.sign({ email:newUser.email, password:newUser.password }, 'secretkey', { expiresIn: 86400 });
+        res.status(200).send({ message:"User Registered succesfully", token: token});
+     })
+    .catch(err=>{
+        console.log(err)
+    });
 }
 
 export const login = (req, res) => {
-  const { email, password } = req.body;
+  const email= req.body.email;
+  const password= req.body.password;
 
-  const userFound = users.find(((userInfo) => userInfo.email === email));
-  if (!userFound) return res.status(404).send({ status: 404, message: 'Account does not exist' });
-
-  var passwordIsValid = bcrypt.compareSync(req.body.password, userFound.password);
-  if (!passwordIsValid) return res.status(401).send({ auth: false,message:"incorrect password", token: null });
-
-  var token = jwt.sign({ email:userFound.email, password:userFound.password }, 'secretkey', {
-    expiresIn: 86400 // expires in 24 hours
-  });
-  res.json({message: 'Login succesfully',token});
+  Users.findOne({email:email})
+        .exec()
+        .then(usr=>{
+          if(usr){
+            bcrypt.compare(password, usr.password,function(err, result){
+              if(err){
+                res.json({err})
+              }
+              if(result){
+                var token = jwt.sign({ email:usr.email, password:usr.password }, 'secretkey', { expiresIn: 86400 });
+                res.status(200).send({ message:"User Logged in succesfully", token: token});
+              }
+              else{
+                res.status(500).send({message:'Invalid password'})
+              }
+            })
+          }
+          else{
+            res.send({message:'User not registered, create Account'})
+          }
+        })
+        .catch(err=>{
+          res.status(500).send({err});
+        });
 };
 
 
@@ -68,6 +79,24 @@ export const verifyToken=(req, res, next)=>{
     }
 }
 
+export const checkDuplicate=(req, res, next)=>{
+  Users.findOne({email:req.body.email})
+        .exec()
+        .then(usr=>{
+            if(usr){
+            res.send({message:'This email is registered with an other account'})
+            }
+            else{
+              next();
+            }            
+        })
+        .catch(err=>{
+            console.log(err)
+            res.status(500)
+        });
+}
+
+
 export const verifyAdmin=(req,res,next)=>{
   //get auth header values
   const bearerHeader= req.headers['authorization'];
@@ -79,9 +108,14 @@ export const verifyAdmin=(req,res,next)=>{
               res.send(err); 
           }
           else{
-            const user=users.find(((userInfo) => userInfo.email === tokenData.email));
-            if(user.role!=='admin') return res.status(401).send({ auth: false,message:"Unable to perfom this action, You are not admin!"});
-            next();
+            Users.find({email:tokenData.email})
+            .exec()
+            .then(usr=>{
+              if(usr.role!=='admin') return res.status(401).send({ auth: false,message:"Unable to perfom this action, You are not admin!"});
+              next();
+            }).catch(
+              err=>{console.log(err)}
+            );    
           }
       });        
   }

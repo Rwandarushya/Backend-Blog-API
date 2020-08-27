@@ -1,5 +1,6 @@
 import express from 'express';
-import {getAllPosts, getPostById,getComments,addComment,deleteById, createPost, deletePost, updatePost,verifyAuthor} from '../controller/post_controller.js'
+import {getAllPosts, getPostById, createPost, deletePost, updatePost,verifyAuthor} from '../controller/post_controller.js'
+import {getAllComments,addComment,deleteById} from '../controller/comment_controller.js'
 import {verifyToken, verifyAdmin} from '../controller/auth_controller';
 
 const router =express.Router();
@@ -8,7 +9,7 @@ router.get('/', getAllPosts);
 
 router.get('/:id',getPostById);
 
-router.get('/:id/comments', getComments);
+router.get('/:id/comments', getAllComments);
 
 router.post('/:id/comments' , verifyToken, addComment);
 

@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-
+import mongoose from 'mongoose';
 import myposts from './model/posts.json';
 let posts=myposts;
 
@@ -11,6 +11,9 @@ import userRoutes from './routes/user.js'
 import authRoutes from './routes/auth.js'
 
 import jwt from 'jsonwebtoken';
+
+mongoose.connect('mongodb+srv://marius:marius@cluster0.0vsjl.mongodb.net/myDB?retryWrites=true&w=majority',{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
+);
 
 const app=express();
 

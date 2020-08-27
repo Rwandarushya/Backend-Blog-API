@@ -1,73 +1,85 @@
-import myposts from '../model/posts.json';
+import Posts from '../model/post_model';
 import  jwt  from 'jsonwebtoken';
-import bodyParser from 'body-parser'
-
-let posts=myposts;
+import mongoose from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
+uuidv4();
 
 export const getAllPosts=(req, res)=>{
-    res.send(posts);
+    Posts.find()
+    .exec()
+    .then(psts=>{
+        res.status(200).json({psts});
+    })
+    .catch(err=>{
+        res.status(500).json(err);
+    });
 };
 
 
 export const createPost= (req,res)=>{
     var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-    const myPost={...req.body, date, comments:[]};
-            posts.push(myPost);
-            res.send({message:"post created succesfully",myPost});        
-    };
-
+    const newPost= new Posts({
+        post_title:req.body.post_title,
+        post_body:req.body.post_body,
+        author:req.body.author, 
+        author_email:req.body.author_email,
+        Date:date,
+        comments:[]
+    });
+    newPost.save().then(result=>{
+        res.send({message: 'post saved succesfully',result});
+    })
+    .catch(err=>{
+        console.log(err)
+    });
+}
+    
 export const getPostById= (req, res)=>{
     const {id} = req.params;
-    const post= posts.find((p)=>p.post_id===parseInt(id) );
-   res.send(post);
+    Posts.findById(id)
+        .exec()
+        .then(pst=>{
+            if(pst){
+            res.status(200).json({pst});
+            }
+            else{
+                res.status(404).json({message:'Post not found'})
+            }            
+        })
+        .catch(err=>{
+            console.log(err)
+            res.status(500)
+        });
 };
 
-export const getComments=(req, res)=>{
-    const {id}= req.params;
-    const post=  posts.find((p)=>p.post_id===parseInt(id));
-    res.send(post.comments);
-}
-
-export const addComment=(req, res)=>{
-    const {id}=req.params;
-    const post= posts.find((p)=>p.post_id===parseInt(id));
-    const comment= req.body;
-    post.comments.push(comment);
-    res.send(post.comments);
-}
-
-export const deleteById=(req, res)=>{
-    const {id,c_id}=req.params;
-    const post= posts.find((p)=>p.post_id===parseInt(id));
-    const comment= post.comments.find((c)=>c.comment_id===c_id);
-    post.comments.pop(comment);
-    res.send({message: "comments deleted succesfully", comments:post.comments});
-}
 
 
 export const deletePost=(req,res)=>{
-    const {id} = req.params;
-    posts=posts.filter((p)=>p.post_id !==parseInt(id) );
-    res.send(posts);
+    const {id}= req.params;
+    Posts.remove({_id:id})
+        .exec()
+        .then(result=>{
+            res.status(200).json({message:'Post deleted succesfully'})
+        }).
+        catch(err=>{
+            res.status(500).json(err);
+        });
 };
 
 export const updatePost=(req, res)=>{
-    const {id} = req.params;
-    const {post_title, post_body, author}= req.body;
-    const myPost= posts.find(p=>p.post_id===parseInt(id) );
-
-    if(post_title){
-        myPost.post_title=post_title;
+    const updateOps={};
+    for(const ops of req.body){
+        updateOps[ops.propName]=obs.value;
     }
-    if(post_body){
-        myPost.post_body=post_body;
-    }
-    if(author){
-        myPost.author=author;
-    }
-
-    res.send(posts);
+    Product.update({_id:id},{set: updateOps})
+            .exec()
+            .then(result=>{
+                res.status(200).json({message:"Post updated successfully!"})
+            })
+            .catch(err=>{
+                res.status(500).json({err})
+            });
 };
 
 export const verifyAuthor=(req,res,next)=>{
