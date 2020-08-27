@@ -11,6 +11,7 @@ export const findUserById=(req, res)=>{
    res.send(user);
 };
 
+
 export const updateUser=(req, res)=>{
     const {id} = req.params;
     const {first_name, last_name, role}= req.body;
@@ -25,7 +26,6 @@ export const updateUser=(req, res)=>{
     if(role){
         myUser.role=role;
       }
-
     res.send(users);
 };
 

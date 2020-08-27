@@ -1,6 +1,6 @@
 import express from 'express';
-import {getAllPosts, getPostById,getComments,addComment, createPost, deletePost, updatePost} from '../controller/post_controller.js'
-import {verifyToken} from '../controller/auth_controller';
+import {getAllPosts, getPostById,getComments,addComment,deleteById, createPost, deletePost, updatePost,verifyAuthor} from '../controller/post_controller.js'
+import {verifyToken, verifyAdmin} from '../controller/auth_controller';
 
 const router =express.Router();
 
@@ -10,12 +10,14 @@ router.get('/:id',getPostById);
 
 router.get('/:id/comments', getComments);
 
-router.post('/:id/comments', addComment);
+router.post('/:id/comments' , verifyToken, addComment);
 
-router.post('/',verifyToken, createPost);
+router.delete('/:id/comments/:c_id',[verifyToken,verifyAdmin],deleteById)
 
-router.delete('/:id',verifyToken, deletePost);
+router.post('/',[verifyToken,verifyAdmin], createPost);
 
-router.patch('/:id', verifyToken, updatePost);
+router.delete('/:id',[verifyToken,verifyAdmin,verifyAuthor], deletePost);
+
+router.patch('/:id', [verifyToken,verifyAdmin,verifyAuthor], updatePost);
 
 export default router;

@@ -3,21 +3,47 @@ const chaiHttp= require('chai-http');
 import app from '../index.js';
 import bodyParser from 'body-parser'
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 chai.use(chaiHttp);
 
 
+//login middleware
+function login(){
+   //mock user
+   const user={
+    "email":"robert@gmail.com",
+    "password":"123456"
+    }
+  const userFound = users.find(((userInfo) => userInfo.email === user.email));
+  if (!userFound) return res.status(404).send({ status: 404, message: 'Account does not exist' });
+
+  var passwordIsValid = bcrypt.compareSync(user.password, userFound.password);
+  if (!passwordIsValid) return res.status(401).send({ auth: false,message:"incorrect password", token: null });
+
+  var token = jwt.sign({ email:userFound.email, password:userFound.password }, 'secretkey', {
+    expiresIn: 86400 // expires in 24 hours
+  });
+  res.json({message: 'Login succesfully',token});
+}
+
+
+
 describe('Test the authentication',()=>{
-    it('it should check user and return token',()=>{
+
+    before((done)=>{
+        login();
+        it('it should check user and return token',()=>{
         chai.request(app)
             .post('/login')
             .end((err, res)=>{
                 assert.typeOf(res.body, 'Object');
                 assert.typeOf(res.body.token, 'string');
             })
+            done();
     })
-    
+})
+
 });
 
 describe('Test posts route',()=>{
@@ -51,6 +77,8 @@ describe('Test posts route',()=>{
     });
 
     it('it should add comment to the post', ()=>{
+        before((done)=>{
+        login();
         //creating a mock comment
         const comment=  {
             "comment_id": "0007",
@@ -63,9 +91,10 @@ describe('Test posts route',()=>{
             .send(comment)
             .end((err, res)=>{
                 const comments= res.body;
-                expect(comments).to.have.lengthOf(3);
                 expect(comments[2].Names).to.equal('Paccy Lotro');
             });
+            done();
+        });
     });
 
     it('it should save the post',()=>{        
@@ -76,14 +105,7 @@ describe('Test posts route',()=>{
                      "post_body": "information gathering, planning, design , implementing, testing and deployin, maintenamce",
                      "author": "Gael Hirwa"
              }
-            chai.request(app)
-                .post('/login')
-                .end((err, res)=>{
-                    // if i want to test login
-                    const token =res.boby;
-                    err.should.be.a(null);
-                    token.should.be.a('string');
-                });                
+            login();             
         
             chai.request(app)
                 .post('/posts')
