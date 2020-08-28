@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.24% </span>
+                <span class="strong">41.18% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/17</span>
+                <span class='fraction'>7/17</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/4</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">50% </span>
-                <span class="quiet">Branches</span>
-                <span class='fraction'>2/4</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>7/14</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -91,20 +91,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import  jwt  from 'jsonwebtoken';
 import express from 'express'
 import bodyParser from 'body-parser'
@@ -114,21 +114,21 @@ let users= allUsers;
 &nbsp;
 //login middleware
 &nbsp;
- export const login = (req, res) =&gt; {
-    const { email, password } = {
+ export const login = <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
+    const { email, password } = <span class="cstat-no" title="statement not covered" >{</span>
         "email":"robert@gmail.com",
         "password":"123456"
         }
-    const userFound = users.find(((userInfo) =&gt; userInfo.email === email));
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (!userFound) <span class="cstat-no" title="statement not covered" >return r</span>es.status(404).send({ status: 404, message: 'Account does not exist' });
+    const userFound = <span class="cstat-no" title="statement not covered" >users.</span>find(((<span class="fstat-no" title="function not covered" >userInfo) =&gt; <span class="cstat-no" title="statement not covered" >u</span>serInfo.email === email));</span>
+<span class="cstat-no" title="statement not covered" >    if (!userFound) <span class="cstat-no" title="statement not covered" >return r</span></span>es.status(404).send({ status: 404, message: 'Account does not exist' });
   
-    var passwordIsValid = bcrypt.compareSync(password, userFound.password);
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (!passwordIsValid) <span class="cstat-no" title="statement not covered" >return r</span>es.status(401).send({ auth: false,message:"incorrect password", token: null });
+    var passwordIsValid = <span class="cstat-no" title="statement not covered" >bcrypt.c</span>ompareSync(password, userFound.password);
+<span class="cstat-no" title="statement not covered" >    if (!passwordIsValid) <span class="cstat-no" title="statement not covered" >return r</span></span>es.status(401).send({ auth: false,message:"incorrect password", token: null });
   
-    var token = jwt.sign({ email:userFound.email, password:userFound.password }, 'secretkey', {
+    var token = <span class="cstat-no" title="statement not covered" >jwt.s</span>ign({ email:userFound.email, password:userFound.password }, 'secretkey', {
       expiresIn: 86400 // expires in 24 hours
     });
-    return token;
+<span class="cstat-no" title="statement not covered" >    return t</span>oken;
   };</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -136,7 +136,7 @@ let users= allUsers;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Aug 27 2020 09:02:44 GMT+0200 (Eastern European Standard Time)
+                at Fri Aug 28 2020 21:21:12 GMT+0200 (Eastern European Standard Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

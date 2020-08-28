@@ -108,7 +108,7 @@ export const verifyAdmin=(req,res,next)=>{
               res.send(err); 
           }
           else{
-            Users.find({email:tokenData.email})
+            Users.findOne({email:tokenData.email})
             .exec()
             .then(usr=>{
               if(usr.role!=='admin') return res.status(401).send({ auth: false,message:"Unable to perfom this action, You are not admin!"});
