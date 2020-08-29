@@ -61,3 +61,16 @@ Messages.remove({_id:id})
         });
 };
 
+export const messageFound=(req, res, next)=>{
+    const {id} = req.params;
+    Messages.findById(id)
+        .exec()
+        .then(pst=>{
+            if(!pst) return  res.status(404).json({message:'Message not found'})
+            next();           
+        })
+        .catch(err=>{
+            return  res.status(404).json({message:'Error, Message not found check your id'})
+        });
+}
+
