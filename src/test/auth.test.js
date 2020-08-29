@@ -26,9 +26,22 @@ describe('POST /login',()=>{
                  done();
          })
   });
+
+  //when try to login user who is not registered
+
+  it("should not be able to login if they have not registered", function(done) {
+    chai.request(app)
+          .post("/auth/login")
+          .send({ email: "wrongemail@gmail.com", password: "nope" })
+          .end(function(err, res) {
+            assert.equal(res.body.message,'User not registered, create Account');
+          console.log(res.body);
+      done();
+    });
+  });
 })
 
-//test signup route
+//test signup new user route
 
 describe('POST /signUp',()=>{
   beforeEach(function(){

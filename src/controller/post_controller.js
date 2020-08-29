@@ -8,7 +8,7 @@ export const getAllPosts=(req, res)=>{
     Posts.find()
     .exec()
     .then(psts=>{
-        res.status(200).json({psts});
+        res.status(200).json(psts);
     })
     .catch(err=>{
         res.status(500).json(err);
@@ -41,10 +41,10 @@ export const getPostById= (req, res)=>{
         .exec()
         .then(pst=>{
             if(pst){
-            res.status(200).json({pst});
+            res.status(200).json(pst);
             }
             else{
-                res.status(404).json({message:'Post not found'})
+              res.status(404).json({message:'Post not found'})
             }            
         })
         .catch(err=>{
@@ -52,6 +52,20 @@ export const getPostById= (req, res)=>{
             res.status(500)
         });
 };
+
+
+export const postFound=(req, res, next)=>{
+    const {id} = req.params;
+    Posts.findById(id)
+        .exec()
+        .then(pst=>{
+            if(!pst) return  res.status(404).json({message:'Post not found'})
+            next();           
+        })
+        .catch(err=>{
+            return  res.status(404).json({message:'Error, Post not found check your id'})
+        });
+}
 
 
 
@@ -82,29 +96,6 @@ export const updatePost=(req, res)=>{
             });
 };
 
-export const verifyAuthor=(req,res,next)=>{
-    const {id}= req.params
-    const thisPost=posts.find(p=>p.post_id===parseInt(id));
-    //get auth header values
-    const bearerHeader= req.headers['authorization'];
-    //check if bearer is undefined
-    if(typeof bearerHeader !== 'undefined'){
-        req.token=bearerHeader;
-        jwt.verify(req.token, 'secretkey', (err, tokenData)=>{
-            if(err){
-                res.send(err); 
-            }
-            else{
-              if(tokenData.email!==thisPost.author_email) return res.status(403).send({ auth: false,message:"Unable to perfom this action, You are not the author of this post!"});
-              if(user.role!=='admin') return res.status(401).send({ auth: false,message:"Unable to perfom this action, You are not admin!"});
-              next();
-            }
-        });        
-    }
-    else{
-        res.sendStatus(403);
-    }
-  }
 
 
 
