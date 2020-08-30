@@ -99,7 +99,6 @@ describe('POST /messages',()=>{
              .post('/auth/login')
              .send({email:"mugisha11@gmail.com", password:"123456"})
              .then(function (res) {
-                console.log(res.body)
                 chai.request(app)
                     .delete('/messages/hghggygvhvhvhvhvhv')
                     .set("Authorization",res.body.token)

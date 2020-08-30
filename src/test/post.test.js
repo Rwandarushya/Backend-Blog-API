@@ -31,7 +31,6 @@ describe('POST /post',()=>{
              .post('/auth/login')
              .send({email:"mugisha11@gmail.com", password:"123456"})
              .then(function (res) {
-                console.log(res.body)
                 chai.request(app)
                     .post('/posts')
                     .set("Authorization",res.body.token)
@@ -62,7 +61,6 @@ describe('POST /post',()=>{
              .post('/auth/login')
              .send({email:"chris@gmail.com", password:"123456"})
              .then(function (res) {
-                console.log(res.body)
                 chai.request(app)
                     .post('/posts')
                     .set("Authorization",res.body.token)
@@ -140,12 +138,10 @@ describe('DELETE /post',()=>{
              .post('/auth/login')
              .send({email:"mugisha11@gmail.com", password:"123456"})
              .then(function (res) {
-                console.log(res.body)
                 chai.request(app)
                     .delete('/posts/hghggygvhvhvhvhvhv')
                     .set("Authorization",res.body.token)
                     .end((err,res)=>{
-                        console.log(res.body)
                         assert.equal(res.body.message,'Error, Post not found check your id')
                         done()
                     })                                 

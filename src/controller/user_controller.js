@@ -7,7 +7,7 @@ export const getAllUsers=(req, res)=>{
     Users.find()
         .exec()
         .then(usr=>{
-            res.status(200).json({usr});
+            res.status(200).json(usr);
         })
         .catch(err=>{
             res.status(500).json(err)
@@ -20,15 +20,14 @@ export const findUserById=(req, res)=>{
         .exec()
         .then(usr=>{
             if(usr){
-            res.status(200).json({usr});
+            res.status(200).json(usr);
             }
             else{
                 res.status(404).json({message:'User not found'})
             }            
         })
         .catch(err=>{
-            console.log(err)
-            res.status(500)
+            res.status(500).send({message:'Could not find that user'})
         });
 };
 
@@ -59,3 +58,22 @@ export const deleteUser=(req, res)=>{
             res.status(500).json(err);
         });
 };
+
+export const userFound = (req, res, next) => {
+    const {
+        id
+    } = req.params;
+    Users.findById(id)
+        .exec()
+        .then(pst => {
+            if (!pst) return res.status(404).json({
+                message: 'user not found'
+            })
+            next();
+        })
+        .catch(err => {
+            return res.status(404).json({
+                message: 'Error, user not found check your id'
+            })
+        });
+}

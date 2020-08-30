@@ -34,8 +34,8 @@ describe('POST /login',()=>{
           .post("/auth/login")
           .send({ email: "wrongemail@gmail.com", password: "nope" })
           .end(function(err, res) {
+            assert.equal(err, null)
             assert.equal(res.body.message,'User not registered, create Account');
-          console.log(res.body);
       done();
     });
   });
