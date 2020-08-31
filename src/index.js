@@ -9,6 +9,7 @@ import postRoutes from './routes/posts.js'
 import messageRoutes from './routes/messages.js'
 import userRoutes from './routes/user.js'
 import authRoutes from './routes/auth.js'
+import commentroutes from './routes/comments'
 
 import jwt from 'jsonwebtoken';
 
@@ -34,6 +35,7 @@ app.get('/', (req, res)=>{
 
 app.use('/auth',authRoutes )
 app.use('/posts', postRoutes);
+app.use('/comments',commentroutes)
 app.use('/messages', messageRoutes);
 app.use('/users', userRoutes);
 

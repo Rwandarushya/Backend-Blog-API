@@ -11,6 +11,7 @@ chai.use(chaiHttp);
 // test get routes
 
 describe('Get /messages',()=>{
+  var token='';
   beforeEach(function(){
     mongoose.connect('mongodb+srv://marius:marius@cluster0.0vsjl.mongodb.net/myDB?retryWrites=true&w=majority',{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
   });
@@ -18,25 +19,8 @@ describe('Get /messages',()=>{
   afterEach(function(){
     mongoose.disconnect();
   });
-    it('it should  retrieve all messages when logged in as admin',(done)=>{ 
-      chai.request(app)
-             .post('/auth/login')
-             .send({email:"mugisha11@gmail.com", password:"123456"})
-             .then(function (res) {
-                chai.request(app)
-                    .get('/messages')
-                    .set("Authorization",res.body.token)
-                    .end((err,res)=>{
-                      assert.typeOf(res.body,'Array')
-                        done()
-                    })                                 
-             })
-             .catch(function (err) {
-                throw err;
-             });
-    });
-
-    it('it should  get message of given id',(done)=>{ 
+    
+  it('it should  get message of given id',(done)=>{ 
       chai.request(app)
              .post('/auth/login')
              .send({email:"mugisha11@gmail.com", password:"123456"})

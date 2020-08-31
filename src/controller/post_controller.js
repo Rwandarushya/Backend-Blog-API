@@ -26,6 +26,7 @@ export const createPost = (req, res) => {
         post_body: req.body.post_body,
         author: req.body.author,
         author_email: req.body.author_email,
+        ref:uuidv4(),
         Date: date,
         comments: []
     });
@@ -87,7 +88,7 @@ export const deletePost = (req, res) => {
     const {
         id
     } = req.params;
-    Posts.remove({
+    Posts.deleteOne({
             _id: id
         })
         .exec()
@@ -102,14 +103,16 @@ export const deletePost = (req, res) => {
 };
 
 export const updatePost = (req, res) => {
-    const updateOps = {};
-    for (const ops of req.body) {
-        updateOps[ops.propName] = obs.value;
-    }
-    Product.update({
+    const {id} = req.params;
+    Posts.update({
             _id: id
         }, {
-            set: updateOps
+            set: {
+                post_title:req.body.post_title,
+                post_body:req.body.post_body,
+                author:req.body.author, 
+                author_email:req.body.author_email
+            }
         })
         .exec()
         .then(result => {
