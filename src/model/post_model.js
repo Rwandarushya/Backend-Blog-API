@@ -6,6 +6,7 @@ const postSchema=mongoose.Schema({
     author:String, 
     author_email:String,
     Date:String,
+    ref:String
 })
 
 module.exports= mongoose.model('Post', postSchema);

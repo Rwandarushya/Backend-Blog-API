@@ -25,8 +25,6 @@ describe('POST /post',()=>{
             "author": "Gael Hirwa",
             "author_email":"manzi@yahoo.fr"
          }
-
-
          chai.request(app)
              .post('/auth/login')
              .send({email:"mugisha11@gmail.com", password:"123456"})
