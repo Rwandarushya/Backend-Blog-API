@@ -1,6 +1,7 @@
 import chai, {expect, should, assert} from 'chai';
 import chaiHttp from 'chai-http'
 import app from '../index.js';
+import Users from '../model/user_model'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 app.use(bodyParser.json());
@@ -8,13 +9,17 @@ app.use(bodyParser.json());
 chai.use(chaiHttp);
 
 describe('POST /login',()=>{
-  beforeEach(function(){
-    mongoose.connect('mongodb+srv://marius:marius@cluster0.0vsjl.mongodb.net/myDB?retryWrites=true&w=majority',{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
-  });
 
-  afterEach(function(){
-    mongoose.disconnect();
+  it('it should give welcome message',(done)=>{
+    chai.request(app)
+        .get('/')
+        .end((err, res)=>{
+          assert.equal(err,null);
+          assert.equal(res.body.message, 'welcome to express')
+          done();
+        })
   })
+
   it('user should login',(done)=>{ 
       chai.request(app)
              .post('/auth/login')
@@ -44,15 +49,7 @@ describe('POST /login',()=>{
 //test signup new user route
 
 describe('POST /signUp',()=>{
-  beforeEach(function(){
-    mongoose.connect('mongodb+srv://marius:marius@cluster0.0vsjl.mongodb.net/myDB?retryWrites=true&w=majority',{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
-  });
-
-  afterEach(function(){
-    mongoose.disconnect();
-  })
-  it('it should register user',(done)=>{ 
-
+  it('it should not register user when email is already exist',(done)=>{ 
     //mock user
     const user={
       "first_name":"Rachel",
@@ -70,6 +67,39 @@ describe('POST /signUp',()=>{
                  done();
          })
   });
+
+
+  after(() => {
+    Users.remove({email:'stevemug@gmail.com'})
+        .exec()
+        .then(result=>{
+            res.status(200).json({message:'User deleted succesfully'})
+        }).
+        catch(err=>{
+            res.status(500).json(err);
+        });
+  });  
+
+  it('it should register user',(done)=>{ 
+    //mock user
+    const user={
+      "first_name":"Rachel",
+      "last_name":"Giramahoro",
+      "email":"stevemug@gmail.com",
+      "role":"admin",
+      "password":"0000"
+    }
+      chai.request(app)
+             .post('/auth/signup')
+             .send(user)
+             .end( (err, res)=>{
+                 assert.equal(err, null);
+                 expect(res.body.message).to.equal('User Registered succesfully')
+                 done();
+         })
+  });
 })
+
+
 
 

@@ -44,7 +44,7 @@ export const createMessage=(req, res)=>{
        res.send({message: 'Mesages saved succesfully',result});
    })
    .catch(err=>{
-       console.log(err)
+       res.send(err)
    });
  
 };

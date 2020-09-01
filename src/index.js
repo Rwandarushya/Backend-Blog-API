@@ -30,7 +30,7 @@ app.listen(PORT, ()=>{
 });
 
 app.get('/', (req, res)=>{
-    res.send('welcome to express');
+    res.status(200).json({message:'welcome to express'})
 });
 
 app.use('/auth',authRoutes )
