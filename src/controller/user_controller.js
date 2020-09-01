@@ -19,27 +19,27 @@ export const findUserById=(req, res)=>{
     Users.findById(id)
         .exec()
         .then(usr=>{
-            if(usr){
-            res.status(200).json(usr);
-            }
-            else{
-                res.status(404).json({message:'User not found'})
-            }            
+            if(usr) res.status(200).json(usr);          
         })
         .catch(err=>{
             res.status(500).send({message:'Could not find that user'})
         });
 };
 
-
 export const updateUser=(req, res)=>{
-    const updateOps={};
-    for(const ops of req.body){
-        updateOps[ops.propName]=obs.value;
-    }
-    Users.update({_id:id},{set: updateOps})
+    const {id} = req.params;
+    Users.update({
+            _id: id
+        }, {
+            set: {
+                first_name:req.body.first_name,
+                last_name:req.body.last_name,
+                email:req.body.email, 
+                role:req.body.role
+            }
+        })
             .exec()
-            .then(result=>{
+            .then(res=>{
                 res.status(200).json({message:"User updated successfully!"})
             })
             .catch(err=>{

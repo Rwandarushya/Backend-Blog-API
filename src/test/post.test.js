@@ -8,14 +8,6 @@ app.use(bodyParser.json());
 chai.use(chaiHttp);
 
 describe('POST /post',()=>{
-    var token='';
-    beforeEach(function(){
-        mongoose.connect('mongodb+srv://marius:marius@cluster0.0vsjl.mongodb.net/myDB?retryWrites=true&w=majority',{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
-    });
-
-    afterEach(function(){
-        mongoose.disconnect();
-    })
 
     it('it should create new post',(done)=>{
         //mock test
@@ -80,14 +72,6 @@ describe('POST /post',()=>{
 //---------------------------------------Get all post-------------------------------------------------
 
 describe('Get /post',()=>{
-    beforeEach(function(){
-        mongoose.connect('mongodb+srv://marius:marius@cluster0.0vsjl.mongodb.net/myDB?retryWrites=true&w=majority',{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
-    });
-
-    afterEach(function(){
-        mongoose.disconnect();
-    })
-
     it('it should retrieve all posts',(done)=>{
         chai.request(app)
             .get('/posts')
@@ -98,11 +82,12 @@ describe('Get /post',()=>{
             })
 
     it('it should get post by id',(done)=>{
+
         chai.request(app)
-            .get('/posts/5f47dc26002a9132c8b85081')
+            .get('/posts/5f4a72dd3471f7148f54ad13')
             .end((err,res)=>{
-                assert.equal(res.body.post_title,'Complete guide to web development with java')
-                assert.equal(res.body.author,'MUginzi oscar')
+                assert.equal(res.body.post_title,'Web development processs')
+                assert.equal(res.body.author,'Gael Hirwa')
                 done()
                 })
         })
@@ -121,17 +106,8 @@ describe('Get /post',()=>{
 
 // test delete post route
 
-describe('DELETE /post',()=>{
-    var token='';
-    beforeEach(function(){
-        mongoose.connect('mongodb+srv://marius:marius@cluster0.0vsjl.mongodb.net/myDB?retryWrites=true&w=majority',{ useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
-    });
-
-    afterEach(function(){
-        mongoose.disconnect();
-    })
-
-    it('it should not delete a postt when you provide wrong id',(done)=>{
+describe('DELETE /post',()=>{ 
+    it('it should not delete a post when you provide wrong id',(done)=>{
          chai.request(app)
              .post('/auth/login')
              .send({email:"mugisha11@gmail.com", password:"123456"})
@@ -150,28 +126,32 @@ describe('DELETE /post',()=>{
 
     })
     
-    /*
-    it('it should delete a post of a given id id',(done)=>{
+    it('it should delete a post of a given id id', (done) => {
         chai.request(app)
             .post('/auth/login')
-            .send({email:"mugisha11@gmail.com", password:"123456"})
+            .send({
+                email: "mugisha11@gmail.com",
+                password: "123456"
+            })
             .then(function (res) {
-               console.log(res.body)
-               chai.request(app)
-                   .delete('/posts/5f47dca4002a9132c8b85082')
-                   .set("Authorization",res.body.token)
-                   .end((err,res)=>{
-                       console.log(res.body)
-                       assert.equal(res.body.message,'Post deleted succesfully')
-                       done()
-                   })                                 
+                const token = res.body.token;
+                chai.request(app)
+                    .get('/posts')
+                    .end(function (err, res) {
+                        chai.request(app)
+                            .delete('/posts/' + res.body[0]._id)
+                            .set("Authorization", token)
+                            .end((err, res) => {
+                                console.log(res.body)
+                                assert.equal(res.body.message, 'Post deleted succesfully')
+                                done()
+                            })
+                    })
             })
             .catch(function (err) {
-               throw err;
+                throw err;
             });
-
-   })
-   */
+    })
 })
 
 

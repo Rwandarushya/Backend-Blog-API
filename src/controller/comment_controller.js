@@ -12,9 +12,6 @@ export const getAllComments=(req, res)=>{
         .then(cmt=>{
             if(cmt){
             res.status(200).json(cmt);
-            }
-            else{
-                res.status(404).json({message:'No comment found'})
             }            
         })
         .catch(err=>{
