@@ -9,6 +9,7 @@
     "build": "babel ./src -d build",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "test": "nyc --reporter=text --reporter=html mocha ./src/test/*.test.js --require @babel/register --timeout 50000 --exit"
+    
   },
   "keywords": [],
   "author": "",

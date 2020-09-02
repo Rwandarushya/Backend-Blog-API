@@ -56,7 +56,7 @@ describe('Get /messages', () => {
             })
             .then(function (res) {
                 chai.request(app)
-                    .get('/messages/5f4a197b0372400f38ff8e79')
+                    .get('/messages/5f4a421f8605ea2ea478c72e')
                     .set("Authorization", res.body.token)
                     .end((err, res) => {
                         assert.equal(res.body.msg.names, 'Hirwa Gael')
@@ -162,3 +162,4 @@ describe('DELETE /messages', () => {
     })
 
 })
+
