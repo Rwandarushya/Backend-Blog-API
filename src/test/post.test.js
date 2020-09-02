@@ -82,15 +82,18 @@ describe('Get /post',()=>{
             })
 
     it('it should get post by id',(done)=>{
-
         chai.request(app)
-            .get('/posts/5f4a72dd3471f7148f54ad13')
-            .end((err,res)=>{
-                assert.equal(res.body.post_title,'Web development processs')
-                assert.equal(res.body.author,'Gael Hirwa')
-                done()
+        .get('/posts')
+        .end(function (err, res) {
+            chai.request(app)
+                .get('/posts/' + res.body[0]._id)
+                .end((err, res) => {
+                    assert.equal(err,null)
+                    expect(res.body).to.have.property('post_body')
+                    done()
                 })
         })
+     })
 
         it('it should not  get post when provided wrong  id',(done)=>{
             chai.request(app)
@@ -142,7 +145,7 @@ describe('DELETE /post',()=>{
                             .delete('/posts/' + res.body[0]._id)
                             .set("Authorization", token)
                             .end((err, res) => {
-                                console.log(res.body)
+                                assert.equal(err, null)
                                 assert.equal(res.body.message, 'Post deleted succesfully')
                                 done()
                             })

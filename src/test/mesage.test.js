@@ -49,23 +49,30 @@ describe('Get /messages', () => {
 
     it('it should  get message of given id', (done) => {
         chai.request(app)
-            .post('/auth/login')
-            .send({
-                email: "mugisha11@gmail.com",
-                password: "123456"
-            })
-            .then(function (res) {
-                chai.request(app)
-                    .get('/messages/5f4a421f8605ea2ea478c72e')
-                    .set("Authorization", res.body.token)
-                    .end((err, res) => {
-                        assert.equal(res.body.msg.names, 'Hirwa Gael')
-                        done()
-                    })
-            })
-            .catch(function (err) {
-                throw err;
-            });
+      .post('/auth/login')
+      .send({
+          email: "mugisha11@gmail.com",
+          password: "123456"
+      })
+      .then(function (res) {
+          const token = res.body.token;
+          chai.request(app)
+              .get('/messages')
+              .set("Authorization", token)
+              .end(function (err, res) {
+                  chai.request(app)
+                      .get('/messages/' + res.body[0]._id)
+                      .set("Authorization", token)
+                      .end((err, res) => {
+                          assert.equal(err,null)
+                          console.log(res.body)
+                          done()
+                      })
+              })
+      })
+      .catch(function (err) {
+          throw err;
+      });
     });
 
     // it('it should not get message when wrong id is provided',(done)=>{ 

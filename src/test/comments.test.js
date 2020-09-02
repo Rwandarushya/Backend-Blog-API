@@ -61,49 +61,63 @@ describe('POST /comments',()=>{
  }
   it('it should save a comment',(done)=>{
     chai.request(app)
-             .post('/auth/login')
-             .send({email:"mugisha11@gmail.com", password:"123456"})
-             .then(function (res) {
+    .post('/auth/login')
+    .send({
+        email: "mugisha11@gmail.com",
+        password: "123456"
+    })
+    .then(function (res) {
+        const token = res.body.token;
+        chai.request(app)
+            .get('/posts')
+            .end(function (err, res) {
                 chai.request(app)
-                    .post('/comments/5f4a72dd3471f7148f54ad13')
-                    .set("Authorization",res.body.token)
-                    .send(myComment)
-                    .end((err,res)=>{
-                      assert.equal(err, null)
-                      assert.equal(res.body.message,'Comment saved succesfully')
+                    .post('/comments/' + res.body[0]._id)
+                    .set("Authorization", token)
+                    .end((err, res) => {
+                        assert.equal(err,null)
+                        assert.equal( res.body.message,'Comment saved succesfully')
                         done()
-                    })                                 
-             })
-             .catch(function (err) {
-                throw err;
-             });
+                    })
+            })
+    })
+    .catch(function (err) {
+        throw err;
     });
 })
-
-it('it should delete a comment of a given id id', (done) => {
-  chai.request(app)
-      .post('/auth/login')
-      .send({
-          email: "mugisha11@gmail.com",
-          password: "123456"
-      })
-      .then(function (res) {
-          const token = res.body.token;
-          chai.request(app)
-              .get('/comments/5f4a72dd3471f7148f54ad13')
-              .end(function (err, res) {
-                  chai.request(app)
-                      .delete('/comments/' + res.body[0]._id)
-                      .set("Authorization", token)
-                      .end((err, res) => {
-                          assert.equal(err,null)
-                          assert.equal(res.body.message,'comment removed succesfully')
-                          done()
-                      })
-              })
-      })
-      .catch(function (err) {
-          throw err;
-      });
 })
+
+describe('DELETE /comments', ()=>{
+  it('it should delete a comment',(done)=>{
+    chai.request(app)
+    .post('/auth/login')
+    .send({
+        email: "mugisha11@gmail.com",
+        password: "123456"
+    })
+    .then(function (res) {
+        const token = res.body.token;
+        chai.request(app)
+            .get('/posts')
+            .end(function (err, res) {
+                chai.request(app)
+                    .get('/comments/' + res.body[0]._id)
+                    .end((err, res) => {
+                        chai.request(app)
+                            .delete('/comments/'+res.body[0]._id)
+                            .set("Authorization", token)
+                            .end((err, res)=>{
+                              assert.equal(err, null)
+                              assert.equal(res.body.message,'comment removed succesfully')
+                              done()
+                            })                            
+                    })
+            })
+    })
+    .catch(function (err) {
+        throw err;
+    });
+})
+})
+
 
