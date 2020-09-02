@@ -12,14 +12,34 @@ app.use(bodyParser.json());
 chai.use(chaiHttp);
 
 describe('Get /All comments', () => {
-  it('it should  retrieve all comments if post exist', (done) => {
+  it('it should  retrieve all comments of a post', (done) => {
+
     chai.request(app)
-      .get('/comments/5f4a3d61137fc52900ad8420')
-      .end((err, res) => {
-        assert.typeOf(res.body, 'Array')
-        done()
-      })
-  });
+    .post('/auth/login')
+    .send({
+        email: "mugisha11@gmail.com",
+        password: "123456"
+    })
+    .then(function (res) {
+        const token = res.body.token;
+        chai.request(app)
+            .get('/posts')
+            .end(function (err, res) {
+                chai.request(app)
+                    .delete('/comments/' + res.body[0]._id)
+                    .set("Authorization", token)
+                    .end((err, res) => {
+                        assert.equal(err,null)
+                        console.log(res.body)
+                        done()
+                    })
+            })
+    })
+    .catch(function (err) {
+        throw err;
+    });
+  })
+ 
 
   it('it should show error message when trying to get comments of wrong id ',(done)=>{
     chai.request(app)
