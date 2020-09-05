@@ -50,15 +50,10 @@ export const getPostById = (req, res) => {
         .then(pst => {
             if (pst) {
                 res.status(200).json(pst);
-            } else {
-                res.status(404).json({
-                    message: 'Post not found'
-                })
-            }
+            } 
         })
         .catch(err => {
-            console.log(err)
-            res.status(500)
+            res.status(500).send(err)
         });
 };
 
@@ -67,6 +62,7 @@ export const postFound = (req, res, next) => {
     const {
         id
     } = req.params;
+    if(id.length !== 24) return res.status(400).json({ message: 'id is badly formatted' });
     Posts.findById(id)
         .exec()
         .then(pst => {
@@ -77,7 +73,7 @@ export const postFound = (req, res, next) => {
         })
         .catch(err => {
             return res.status(404).json({
-                message: 'Error, Post not found check your id'
+                message: 'Post not found check your id'
             })
         });
 }

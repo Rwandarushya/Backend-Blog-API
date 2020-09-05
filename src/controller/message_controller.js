@@ -16,12 +16,12 @@ export const getAllMessages=(req, res)=>{
 
 export const findMessageById=(req, res)=>{
     const {id} = req.params;
+    if(id.length !== 24) return res.status(400).json({ message: 'id is badly formatted' });
     Messages.findById(id)
         .exec()
         .then(msg=>{
             if(msg){
-            console.log(msg);
-            res.status(200).json({msg});
+            res.status(200).json(msg);
             }
             else{
                 res.status(404).json({message:'Message not found'})
@@ -29,7 +29,6 @@ export const findMessageById=(req, res)=>{
             
         })
         .catch(err=>{
-            console.log(err)
             res.status(500)
         });
 };
@@ -51,7 +50,7 @@ export const createMessage=(req, res)=>{
 
 export const deleteMessage=(req, res)=>{
 const {id}= req.params;
-Messages.remove({_id:id})
+Messages.deleteOne({_id:id})
         .exec()
         .then(result=>{
             res.status(200).json({message:'Message deleted succesfully'})

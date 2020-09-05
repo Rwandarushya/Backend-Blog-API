@@ -12,10 +12,30 @@ app.use(bodyParser.json());
 chai.use(chaiHttp);
 
 
+//test send message route
+
+describe('POST /messages', () => {
+    it('it should save message', (done) => {
+        const myMessage = {
+            "names": "test@message",
+            "email": "gael@gmail.com",
+            "message": "greetings bantu banjye"
+        }
+        chai.request(app)
+            .post('/messages')
+            .send(myMessage)
+            .end((err, res) => {
+                assert.equal(err, null);
+                assert.equal(res.body.message, 'Mesages saved succesfully')
+                done();
+            })
+    });
+})
+
+
 // test get routes
 
 describe('Get /messages', () => {
-
     it('it should retrieve all messages', (done) => {
         chai.request(app)
             .post('/auth/login')
@@ -37,7 +57,9 @@ describe('Get /messages', () => {
                 throw err;
             });
     })
-    it('it should not retrieve messages when you are not admin', (done) => {
+
+
+    it('it should not retrieve messages when you are not logged in', (done) => {
         chai.request(app)
             .get('/messages')
             .end((err, res) => {
@@ -49,72 +71,77 @@ describe('Get /messages', () => {
 
     it('it should  get message of given id', (done) => {
         chai.request(app)
-      .post('/auth/login')
-      .send({
-          email: "mugisha11@gmail.com",
-          password: "123456"
-      })
-      .then(function (res) {
-          const token = res.body.token;
-          chai.request(app)
-              .get('/messages')
-              .set("Authorization", token)
-              .end(function (err, res) {
-                  chai.request(app)
-                      .get('/messages/' + res.body[0]._id)
-                      .set("Authorization", token)
-                      .end((err, res) => {
-                          assert.equal(err,null)
-                          console.log(res.body)
-                          done()
-                      })
-              })
-      })
-      .catch(function (err) {
-          throw err;
-      });
+        .post('/auth/login')
+        .send({
+            email: "mugisha11@gmail.com",
+            password: "123456"
+        })
+        .then(function (res) {
+            const token = res.body.token;
+            chai.request(app)
+                .get('/messages')
+                .set("Authorization", token)
+                .end(function (err, res) {
+                    chai.request(app)
+                        .get('/messages/' + res.body[0]._id)
+                        .set("Authorization", token)
+                        .end((err, res) => {
+                            assert.equal(err, null)
+                            expect(res.body).to.have.property('email')
+                            expect(res.body).to.have.property('message')
+                            done()
+                        })
+                })
+        })
+        .catch(function (err) {
+            throw err;
+        });
     });
 
-    // it('it should not get message when wrong id is provided',(done)=>{ 
-    //     chai.request(app)
-    //            .post('/auth/login')
-    //            .send({email:"mugisha11@gmail.com", password:"123456"})
-    //            .then(function (res) {
-    //               chai.request(app)
-    //                   .get('/messages/wrkkfekkjkrejkjegk')
-    //                   .set("Authorization",res.body.token)
-    //                   .end((err,res)=>{
-    //                     expect(res).to.have.status('500')
-    //                       done()
-    //                   })                                 
-    //            })
-    //            .catch(function (err) {
-    //               throw err;
-    //            });
-    //   });
-})
-
-//test send message route
-
-describe('POST /messages', () => {
-    it('it should save message', (done) => {
-        const myMessage = {
-            "names": "test@message",
-            "email": "gael@gmail.com",
-            "message": "greetings bantu banjye"
-        }
+    it('it should not get message when wrong id is provided',(done)=>{ 
         chai.request(app)
-            .post('/messages')
-            .send(myMessage)
-            .end((err, res) => {
-                assert.equal(err, null);
-                assert.equal(res.body.message, 'Mesages saved succesfully')
-                done();
-            })
-    });
+               .post('/auth/login')
+               .send({email:"mugisha11@gmail.com", password:"123456"})
+               .then(function (res) {
+                  chai.request(app)
+                      .get('/messages/9f4c78e708651207d8166b90')
+                      .set("Authorization",res.body.token)
+                      .end((err,res)=>{
+                        assert.equal(err,null)
+                        assert.equal(res.body.message,'Message not found')
+                          done()
+                      })                                 
+               })
+               .catch(function (err) {
+                  throw err;
+               });
+      });
+
+      it('it should not get message when wrong formatted id is provided',(done)=>{ 
+        chai.request(app)
+               .post('/auth/login')
+               .send({email:"mugisha11@gmail.com", password:"123456"})
+               .then(function (res) {
+                  chai.request(app)
+                      .get('/messages/WrongIIIIIIIDDDD')
+                      .set("Authorization",res.body.token)
+                      .end((err,res)=>{
+                        assert.equal(err,null)
+                        assert.equal(res.body.message, 'id is badly formatted')
+                          done()
+                      })                                 
+               })
+               .catch(function (err) {
+                  throw err;
+               });
+      });
+
+
 })
 
-// Test delete message route
+
+
+
 
 describe('DELETE /messages', () => {
     it('it should not delete message when you provide wrong id', (done) => {
@@ -154,10 +181,10 @@ describe('DELETE /messages', () => {
                     .set("Authorization", token)
                     .end(function (err, res) {
                         chai.request(app)
-                            .delete('/messages/' + res.body[0]._id)
+                            .delete('/messages/' + res.body[res.body.length-1]._id)
                             .set("Authorization", token)
                             .end((err, res) => {
-                                console.log(res.body)
+                                assert.equal(err, null)
                                 assert.equal(res.body.message, 'Message deleted succesfully')
                                 done()
                             })
