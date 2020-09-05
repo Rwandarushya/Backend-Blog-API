@@ -10,7 +10,7 @@ uuidv4();
 export const signup = (req, res) => {
   var hashedPassword = bcrypt.hashSync(req.body.password, 8);
   const newUser = new Users({
-    first_name: req.body.lirst_name,
+    first_name: req.body.first_name,
     last_name: req.body.last_name,
     email: req.body.email,
     role: req.body.role,
@@ -122,8 +122,7 @@ export const checkDuplicate = (req, res, next) => {
       }
     })
     .catch(err => {
-      console.log(err)
-      res.status(500)
+      res.status(500).send(err)
     });
 }
 
@@ -156,6 +155,6 @@ export const verifyAdmin = (req, res, next) => {
       }
     });
   } else {
-    res.sendStatus(403);
+    return res.status(403).send({message: 'token is undefined'});
   }
 }

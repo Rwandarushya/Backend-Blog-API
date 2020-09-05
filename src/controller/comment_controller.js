@@ -15,7 +15,6 @@ export const getAllComments=(req, res)=>{
             }            
         })
         .catch(err=>{
-            console.log(err)
             res.status(500)
         });
 }
@@ -42,19 +41,15 @@ export const addComment=(req, res)=>{
 
 export const deleteById=(req, res)=>{
     const {id} = req.params;
-    Comments.remove({_id:id})
+    Comments.deleteOne({_id:id})
         .exec()
         .then(cmt=>{
             if(cmt){
             res.status(200).json({message:'comment removed succesfully'});
-            }
-            else{
-                res.status(404).json({message:'No comment found'})
-            }            
+            }           
         })
         .catch(err=>{
-            console.log(err)
-            res.status(500)
+            res.status(500).send(err)
         });
 }
 
@@ -62,6 +57,7 @@ export const postFound = (req, res, next) => {
     const {
         id
     } = req.params;
+    if(id.length !== 24) return res.status(400).json({ status: 400, message: 'Id wrong formatted' });
     Posts.findById(id)
         .exec()
         .then(pst => {

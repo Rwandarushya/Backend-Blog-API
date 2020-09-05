@@ -38,18 +38,20 @@ export const updateUser=(req, res)=>{
                 role:req.body.role
             }
         })
-            .exec()
-            .then(res=>{
-                res.status(200).json({message:"User updated successfully!"})
+        .exec()
+        .then(result => {
+            res.status(200).json({
+                message: "User updated successfully!"
             })
-            .catch(err=>{
-                res.status(500).json({err})
-            });
+        })
+        .catch(err => {
+            res.status(500).json({ err })
+        });
 };
 
 export const deleteUser=(req, res)=>{
     const {id}= req.params;
-    Users.remove({_id:id})
+    Users.deleteOne({_id:id})
         .exec()
         .then(result=>{
             res.status(200).json({message:'User deleted succesfully'})

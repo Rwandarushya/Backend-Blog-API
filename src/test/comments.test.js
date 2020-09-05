@@ -13,40 +13,26 @@ chai.use(chaiHttp);
 
 describe('Get /All comments', () => {
   it('it should  retrieve all comments of a post', (done) => {
-
     chai.request(app)
-    .post('/auth/login')
-    .send({
-        email: "mugisha11@gmail.com",
-        password: "123456"
-    })
-    .then(function (res) {
-        const token = res.body.token;
-        chai.request(app)
-            .get('/posts')
-            .end(function (err, res) {
-                chai.request(app)
-                    .delete('/comments/' + res.body[0]._id)
-                    .set("Authorization", token)
-                    .end((err, res) => {
-                        assert.equal(err,null)
-                        console.log(res.body)
-                        done()
-                    })
+        .get('/posts')
+        .end(function (err, res) {
+            chai.request(app)
+                .get('/comments/' + res.body[0]._id)
+                .end((err, res) => {
+                    assert.equal(err,null)
+                    assert.typeOf(res.body,'Array')
+                    done()
+                })
             })
     })
-    .catch(function (err) {
-        throw err;
-    });
-  })
- 
+    
 
   it('it should show error message when trying to get comments of wrong id ',(done)=>{
     chai.request(app)
     .get('/comments/wronndidddd')
     .end((err, res) => {
       assert.equal(err, null)
-      assert.equal(res.body.message,'Error, Post not found check your id')
+      assert.equal(res.body.message,'Id wrong formatted')
       done()
     })
   })
@@ -87,6 +73,7 @@ describe('POST /comments',()=>{
 })
 })
 
+
 describe('DELETE /comments', ()=>{
   it('it should delete a comment',(done)=>{
     chai.request(app)
@@ -104,7 +91,7 @@ describe('DELETE /comments', ()=>{
                     .get('/comments/' + res.body[0]._id)
                     .end((err, res) => {
                         chai.request(app)
-                            .delete('/comments/'+res.body[0]._id)
+                            .delete('/comments/'+res.body[res.body.length-1]._id)
                             .set("Authorization", token)
                             .end((err, res)=>{
                               assert.equal(err, null)
